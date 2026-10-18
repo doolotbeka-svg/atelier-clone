@@ -109,6 +109,11 @@ export function createApiApp() {
     }
   });
 
+  // Health check: shows whether the Gemini key reached the server, without revealing it
+  app.get('/api/health', (_req, res) => {
+    res.json({ ok: true, geminiKeyConfigured: Boolean(process.env.GEMINI_API_KEY) });
+  });
+
   // Lead Submission API (Stores project briefs & callback requests)
   app.post('/api/consultation-request', (req, res) => {
     const { name, phone, projectType, budget, notes, hasFile } = req.body;
