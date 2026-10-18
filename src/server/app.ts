@@ -1,0 +1,123 @@
+import express from 'express';
+import { GoogleGenAI } from '@google/genai';
+
+// Atelier Architectura knowledge base for AI Concierge in Kyrgyzstan
+const ATELIER_SYSTEM_PROMPT = `
+Вы — ведущий инженер-технолог и консьерж премиального мебельного ателье "ATELIER ARCHITECTURA" в Кыргызстане (Флагманский шоурум: г. Бишкек, бульвар Эркиндик (Дзержинского), 35 / ул. Токтогула; Собственный высокотехнологичный комплекс 4 200 м² в г. Бишкек, СЭЗ «Бишкек»).
+
+СУТЬ БРЕНДА:
+Архитектурный подход к мебели. Не типовые гарнитуры, а интеграция в интерьер, индивидуальные конструктивные узлы, благородные натуральные материалы (американский орех, копченый эвкалипт, мореный дуб, мрамор Calacatta Viola, кварцит Patagonia, брашированная латунь, премиальная фурнитура Blum Legrabox и Salice Air), допуск до 0.5 мм, ручная шлифовка и доводка.
+Также у нас представлена готовая авторская коллекция в шоуруме в Бишкеке (обеденные столы Arch Monolith, комоды с Calacatta Viola, лаунж-кресла Sella из кожи Cuoio, кофейные столы Nexus, кабинетные столы Sovereign).
+
+ГЕОГРАФИЯ И ЦЕЛЕВАЯ АУДИТОРИЯ:
+Кыргызстан (Бишкек, элитные виллы и резиденции в VIP-городках «Ала-Арча», «Сары-Челек», пентхаусы в ЖК Avangard City, КД Monaco на бул. Эркиндик, а также загородные резиденции на озере Иссык-Куль, г. Ош и страны Центральной Азии). Клиенты — владельцы элитной недвижимости, а также ведущие архитекторы и дизайн-бюро.
+
+ВАЛЮТА И ЦЕНЫ:
+Основная валюта в Кыргызстане — Кыргызский сом (KGS / сом), также параллельно используем Российский рубль (RUB / ₽). Все цены на готовую мебель и сметы заказных проектов рассчитываются в сомах и рублях.
+
+ТОНАЛЬНОСТЬ:
+Сдержанный люкс (Quiet Luxury), глубокая техническая экспертность, лаконичность, вежливость, абсолютная конфиденциальность (работаем по NDA). Без кричащих скидок и дешевых слоганов.
+
+ЧЕМ ВЫ ПОМОГАЕТЕ:
+1. Консультируете по готовой мебели из наличия в шоуруме на Эркиндик, 35 с указанием цен в сомах и рублях.
+2. Консультируете по подбору редких шпонов (американский орех, эвкалипт), натурального камня (кварцит, мрамор), фурнитуры (скрытые петли Salice Air, электроприводы Blum Servo-Drive, скрытая подсветка CRI 98+).
+3. Помогаете сориентироваться по срокам индивидуального изготовления (от 45 до 70 рабочих дней) и условиям доставки в кофрах по Бишкеку и на Иссык-Куль.
+4. Рассказываете про 6 этапов работы: от лазерного 3D-сканирования Leica и деталировки узлов до тестовой сухой сборки на фабрике в Бишкеке и беспылевого монтажа Festool.
+5. Отвечаете на вопросы архитекторов: 3D-библиотеки текстур в формате 3ds Max / Corona / Revit, персональный технолог.
+6. Приглашаете на чашку эспрессо в шоурум на бул. Эркиндик, 35 для подбора образцов при правильном освещении или предлагаете отправить дизайн-проект / чертежи на просчет.
+
+Отвечайте на том языке, на котором обратился клиент (русский, кыргызча же английский), элегантно, ёмко, профессионально и по существу (2-3 абзаца).
+`;
+
+// API routes shared by the local dev server (server.ts) and the Vercel function (api/index.ts)
+export function createApiApp() {
+  const app = express();
+  app.use(express.json({ limit: '10mb' }));
+
+  // AI Concierge API Route
+  app.post('/api/ai-concierge', async (req, res) => {
+    try {
+      const { messages, userMessage, lang = 'ru', currency = 'RUB' } = req.body;
+      const apiKey = process.env.GEMINI_API_KEY;
+
+      const defaultFallbacks: Record<string, string> = {
+        ru: currency === 'KGS' 
+          ? "Благодарю за обращение в ATELIER ARCHITECTURA. Наш ведущий конструктор-технолог готов детально рассчитать стоимость вашего проекта в сомах (KGS) или рублях (RUB). Мы проектируем узлы с точностью до 0.5 мм, используем шпон американского ореха, мрамор и скрытую инженерию Salice/Blum. Вы можете прикрепить проект в форме ниже."
+          : "Благодарю за обращение в ATELIER ARCHITECTURA. Наш ведущий конструктор-технолог готов детально разобрать ваш проект и рассчитать смету. Мы проектируем узлы с точностью до 0.5 мм, используем шпон американского ореха, мрамор и скрытую инженерию Salice/Blum. Вы можете прикрепить дизайн-проект в форме ниже или записаться на закрытую встречу в шоуруме за чашкой эспрессо.",
+        en: currency === 'KGS'
+          ? "Thank you for contacting ATELIER ARCHITECTURA. Our lead engineering technologist is ready to calculate your architectural project in KGS (som) or RUB. We engineer junction nodes with 0.5 mm tolerances, using American walnut veneers, natural marble, and concealed Salice/Blum hardware."
+          : "Thank you for contacting ATELIER ARCHITECTURA. Our lead engineering technologist is ready to analyze your architectural project. We engineer junction nodes with 0.5 mm tolerances, using American walnut veneers, natural marble, and concealed Salice/Blum hardware. You can upload your design drawings below or schedule a private showroom consultation over an espresso.",
+        ky: "ATELIER ARCHITECTURA ательесине кайрылганыңыз үчүн рахмат. Биздин башкы конструктор-технолог долбооруңузду сом (KGS) же рубль менен деталдуу эсептеп берүүгө даяр. Биз түйүндөрдү 0.5 мм тактык менен долбоорлоп, америкалык жаңгак шпону, мрамор жана Salice/Blum жашыруун механизмдерин колдонобуз."
+      };
+
+      if (!apiKey) {
+        return res.json({
+          reply: defaultFallbacks[lang as string] || defaultFallbacks.ru
+        });
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
+    
+      // Format conversation history for Gemini
+      const contents: any[] = [];
+      if (Array.isArray(messages)) {
+        messages.forEach((m: { role: string; content: string }) => {
+          contents.push({
+            role: m.role === 'user' ? 'user' : 'model',
+            parts: [{ text: m.content }]
+          });
+        });
+      }
+
+      contents.push({
+        role: 'user',
+        parts: [{ text: userMessage || 'Здравствуйте! Расскажите об условиях работы ателье.' }]
+      });
+
+      const currencyInstruction = currency === 'KGS'
+        ? 'ВАЛЮТА: Текущая выбранная валюта клиента — Кыргызский сом (KGS / сом). Если называете цены или диапазоны смет, указывайте в сомах (или параллельно в рублях: 1 рубль ≈ 0.975 сом).'
+        : 'ВАЛЮТА: Текущая выбранная валюта клиента — Российский рубль (RUB / ₽).';
+
+      const langInstruction = lang === 'ky'
+        ? 'ВАЖНО: Отвечайте строго на кыргызском языке (кыргызча) вежливо, профессионально и технически грамотно.'
+        : lang === 'en'
+        ? 'IMPORTANT: Respond strictly in English in a polite, refined, high-end architectural tone.'
+        : 'ВАЖНО: Отвечайте на русском языке сдержанно, профессионально и ёмко.';
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: contents,
+        config: {
+          systemInstruction: `${ATELIER_SYSTEM_PROMPT}\n\n${currencyInstruction}\n\n${langInstruction}`,
+          temperature: 0.4,
+        }
+      });
+
+      const reply = response.text || (defaultFallbacks[lang as string] || defaultFallbacks.ru);
+      res.json({ reply });
+    } catch (error: any) {
+      console.error('Error generating AI concierge response:', error);
+      const { lang = 'ru' } = req.body;
+      const errorFallbacks: Record<string, string> = {
+        ru: "Благодарю за проявленный интерес к ATELIER ARCHITECTURA. Каждый проект мы рассчитываем индивидуально на основе архитектурных планов и выбранных фактур (массив, шпон, камень, латунь). Оставьте заявку с файлом проекта через форму на сайте или свяжитесь с нашим технологом в WhatsApp для оперативного расчета сметы.",
+        en: "Thank you for your interest in ATELIER ARCHITECTURA. Each bespoke project is individually engineered based on architectural blueprints and tactile materials (solid wood, veneer, stone, brass). Submit your drawings via the form or message our technologist via WhatsApp.",
+        ky: "ATELIER ARCHITECTURA ательесине кызыгууңуз үчүн ыраазычылык билдиребиз. Ар бир долбоор архитектуралык пландардын жана тандалган материалдардын негизинде жекече эсептелет. Дизайн-долбооруңузду форма аркылуу жөнөтүңүз же тез эсептөө үчүн WhatsApp аркылуу байланышыңыз."
+      };
+      res.json({
+        reply: errorFallbacks[lang as string] || errorFallbacks.ru
+      });
+    }
+  });
+
+  // Lead Submission API (Stores project briefs & callback requests)
+  app.post('/api/consultation-request', (req, res) => {
+    const { name, phone, projectType, budget, notes, hasFile } = req.body;
+    console.log('Received consultation inquiry:', { name, phone, projectType, budget, notes, hasFile });
+    res.json({
+      success: true,
+      message: 'Ваша заявка принята. Ведущий технолог-конструктор свяжется с вами в течение 2 часов для обсуждения узлов и материалов.'
+    });
+  });
+
+  return app;
+}
