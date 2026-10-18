@@ -29,6 +29,66 @@ const ATELIER_SYSTEM_PROMPT = `
 Отвечайте на том языке, на котором обратился клиент (русский, кыргызча же английский), элегантно, ёмко, профессионально и по существу (2-3 абзаца).
 `;
 
+const PROJECT_TYPE_LABELS: Record<string, string> = {
+  ready_furniture: 'Готовая мебель из шоурума',
+  kitchen: 'Кухонный гарнитур и остров',
+  wardrobe: 'Мастер-гардеробная',
+  living: 'Гостиная & ТВ-консоль',
+  cabinet: 'Кабинет & библиотека',
+  complex: 'Комплексная меблировка виллы/пентхауса'
+};
+
+const BUDGET_LABELS: Record<string, string> = {
+  from_1_5m: '1.5 – 3 млн',
+  from_3m: '3 – 7 млн',
+  from_7m: '7 – 15 млн',
+  above_15m: 'более 15 млн'
+};
+
+const FORMAT_LABELS: Record<string, string> = {
+  showroom: 'Встреча в шоуруме',
+  online: 'Онлайн'
+};
+
+function escapeHtml(value: unknown): string {
+  return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Sends a form lead to the Telegram chat set in TELEGRAM_CHAT_ID; does nothing until both env vars are set
+async function sendLeadToTelegram(lead: Record<string, any>) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return;
+
+  const currency = lead.currency === 'KGS' ? 'сом' : '₽';
+  const rows: [string, unknown][] = [
+    ['Имя', lead.name],
+    ['Телефон', lead.phone],
+    ['Email', lead.email],
+    ['Тип проекта', lead.projectType && (PROJECT_TYPE_LABELS[lead.projectType] || lead.projectType)],
+    ['Бюджет', lead.budget && `${BUDGET_LABELS[lead.budget] || lead.budget} ${currency}`],
+    ['Формат', lead.format && (FORMAT_LABELS[lead.format] || lead.format)],
+    ['Визит в шоурум', lead.visitShowroom === undefined ? undefined : lead.visitShowroom ? 'да' : 'нет'],
+    ['Комментарий', lead.notes || lead.message],
+    ['Файл', lead.hasFile ? lead.fileName || 'приложен' : undefined],
+    ['Язык сайта', lead.lang]
+  ];
+  const text = [
+    '<b>🛋 Новая заявка с сайта ATELIER</b>',
+    '',
+    ...rows.filter(([, value]) => value !== undefined && value !== '').map(([label, value]) => `<b>${label}:</b> ${escapeHtml(value)}`)
+  ].join('\n');
+
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
+  });
+  if (!response.ok) {
+    throw new Error(`Telegram API ${response.status}: ${await response.text()}`);
+  }
+}
+
 // API routes shared by the local dev server (server.ts) and the Vercel function (api/index.ts)
 export function createApiApp() {
   const app = express();
@@ -111,13 +171,23 @@ export function createApiApp() {
 
   // Health check: shows whether the Gemini key reached the server, without revealing it
   app.get('/api/health', (_req, res) => {
-    res.json({ ok: true, geminiKeyConfigured: Boolean(process.env.GEMINI_API_KEY) });
+    res.json({
+      ok: true,
+      geminiKeyConfigured: Boolean(process.env.GEMINI_API_KEY),
+      telegramConfigured: Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID)
+    });
   });
 
   // Lead Submission API (Stores project briefs & callback requests)
-  app.post('/api/consultation-request', (req, res) => {
+  app.post('/api/consultation-request', async (req, res) => {
     const { name, phone, projectType, budget, notes, hasFile } = req.body;
     console.log('Received consultation inquiry:', { name, phone, projectType, budget, notes, hasFile });
+    try {
+      await sendLeadToTelegram(req.body);
+    } catch (error) {
+      // The visitor still gets a confirmation; the lead stays in the logs above
+      console.error('Error sending lead to Telegram:', error);
+    }
     res.json({
       success: true,
       message: 'Ваша заявка принята. Ведущий технолог-конструктор свяжется с вами в течение 2 часов для обсуждения узлов и материалов.'
