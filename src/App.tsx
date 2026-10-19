@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { KeyUSPs } from './components/KeyUSPs';
 import { Portfolio } from './components/Portfolio';
 import { ReadyCollection } from './components/ReadyCollection';
+import { Configurator3D } from './components/Configurator3D';
 import { CaseStudyModal } from './components/CaseStudyModal';
 import { MaterialsHub } from './components/MaterialsHub';
 import { ProductionStandards } from './components/ProductionStandards';
@@ -75,6 +76,9 @@ function AtelierContent() {
 
         {/* 4. Ready-Made Designer Furniture Collection & Cost Calculator (SOM / RUB) */}
         <ReadyCollection onReserveItem={handleReserveReadyItem} />
+
+        {/* 4b. Interactive 3D furniture configurator */}
+        <Configurator3D onSendToTechnologist={handleOpenConsultation} />
 
         {/* 5. Materials & Hidden Engineering */}
         <MaterialsHub />

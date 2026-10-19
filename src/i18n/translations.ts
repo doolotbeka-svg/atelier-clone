@@ -4,6 +4,7 @@ export interface TranslationData {
   nav: {
     portfolio: string;
     readyCollection: string;
+    configurator: string;
     materials: string;
     standards: string;
     workflow: string;
@@ -278,6 +279,7 @@ export const TRANSLATIONS: Record<Language, TranslationData> = {
     nav: {
       portfolio: 'Портфолио',
       readyCollection: 'Готовая мебель',
+      configurator: '3D-конструктор',
       materials: 'Материалы',
       standards: 'Производство',
       workflow: 'Процесс',
@@ -668,6 +670,7 @@ export const TRANSLATIONS: Record<Language, TranslationData> = {
     nav: {
       portfolio: 'Portfolio',
       readyCollection: 'Ready Collection',
+      configurator: '3D Configurator',
       materials: 'Materials',
       standards: 'Facility',
       workflow: 'Process',
@@ -1058,6 +1061,7 @@ export const TRANSLATIONS: Record<Language, TranslationData> = {
     nav: {
       portfolio: 'Портфолио',
       readyCollection: 'Даяр эмерек',
+      configurator: '3D-конструктор',
       materials: 'Материалдар',
       standards: 'Өндүрүш',
       workflow: 'Процесс',

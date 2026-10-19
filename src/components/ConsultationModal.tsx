@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, CheckCircle2, ShieldCheck, Send, Upload, FileText } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
@@ -26,6 +26,13 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
   const [attachedFile, setAttachedFile] = useState<{ name: string; size: string } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // The modal stays mounted, so refresh the prefilled message each time it opens
+  useEffect(() => {
+    if (!isOpen) return;
+    setFormData((prev) => ({ ...prev, message: prefilledTitle ? `Project: ${prefilledTitle}` : '' }));
+    setIsSubmitted(false);
+  }, [isOpen, prefilledTitle]);
 
   if (!isOpen) return null;
 
