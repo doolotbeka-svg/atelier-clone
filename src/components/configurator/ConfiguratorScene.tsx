@@ -29,6 +29,8 @@ export interface ConfiguratorSceneProps {
   view: CameraView;
   // Changing this number re-frames the camera
   fitKey: number;
+  // False while the scene is off screen: rendering pauses to spare the GPU
+  active: boolean;
 }
 
 const PANEL = 0.018; // carcass board thickness, m
@@ -525,13 +527,18 @@ function Furniture({ state, selectedId, onSelect }: Pick<ConfiguratorSceneProps,
   );
 }
 
-export default function ConfiguratorScene({ state, selectedId, onSelect, view, fitKey }: ConfiguratorSceneProps) {
+export default function ConfiguratorScene({ state, selectedId, onSelect, view, fitKey, active }: ConfiguratorSceneProps) {
   return (
     <Canvas
       shadows
-      dpr={[1, 1.75]}
+      dpr={[1, 1.5]}
+      frameloop={active ? 'always' : 'never'}
       camera={{ position: [2.5, 2, 5], fov: 38, near: 0.05, far: 100 }}
       onPointerMissed={() => onSelect(null)}
+      onCreated={({ gl }) => {
+        // Lets the browser restore the scene after it drops the GPU context instead of leaving it blank
+        gl.domElement.addEventListener('webglcontextlost', (e) => e.preventDefault());
+      }}
     >
       <color attach="background" args={['#1D1B19']} />
       <fog attach="fog" args={['#1D1B19', 12, 26]} />
@@ -541,7 +548,7 @@ export default function ConfiguratorScene({ state, selectedId, onSelect, view, f
         position={[3.5, 5.5, 5]}
         intensity={2.2}
         castShadow
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0004}
         shadow-camera-left={-6}
         shadow-camera-right={6}

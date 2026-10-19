@@ -11,9 +11,13 @@
     font-family: var(--font-sans);
   }
 
-  /* Keep section headings clear of the fixed two-row header when jumping to an anchor */
+  /* Keep section headings clear of the fixed two-row header when jumping to an anchor.
+     The dark root background also covers areas the browser has not painted yet during
+     fast scrolling, which otherwise flash white. */
   html {
     scroll-padding-top: 2.5rem;
+    background-color: #141312;
+    color-scheme: dark;
   }
 }
 
