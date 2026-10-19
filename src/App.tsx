@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { KeyUSPs } from './components/KeyUSPs';
@@ -20,6 +20,20 @@ import { ConsultationModal } from './components/ConsultationModal';
 import { CaseStudy, ReadyFurnitureItem } from './types';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { CurrencyProvider, useCurrency } from './context/CurrencyContext';
+import { ContentProvider } from './context/ContentContext';
+
+// The admin panel lives at #admin and is loaded only when opened
+const AdminPage = lazy(() => import('./admin/AdminPage'));
+
+function useIsAdminRoute() {
+  const [isAdmin, setIsAdmin] = useState(() => window.location.hash === '#admin');
+  useEffect(() => {
+    const onHash = () => setIsAdmin(window.location.hash === '#admin');
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+  return isAdmin;
+}
 
 function AtelierContent() {
   const { lang } = useLanguage();
@@ -129,11 +143,20 @@ function AtelierContent() {
 }
 
 export default function App() {
+  const isAdmin = useIsAdminRoute();
   return (
-    <LanguageProvider>
-      <CurrencyProvider>
-        <AtelierContent />
-      </CurrencyProvider>
-    </LanguageProvider>
+    <ContentProvider>
+      {isAdmin ? (
+        <Suspense fallback={<div className="min-h-screen bg-[#141312]" />}>
+          <AdminPage />
+        </Suspense>
+      ) : (
+        <LanguageProvider>
+          <CurrencyProvider>
+            <AtelierContent />
+          </CurrencyProvider>
+        </LanguageProvider>
+      )}
+    </ContentProvider>
   );
 }

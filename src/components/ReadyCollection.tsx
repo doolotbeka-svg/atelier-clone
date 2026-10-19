@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { READY_FURNITURE_CATALOG } from '../data/readyFurnitureData';
 import { ReadyFurnitureItem } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
+import { useContent } from '../context/ContentContext';
 import { 
   CheckCircle2, Sparkles, SlidersHorizontal, ArrowUpRight, 
   MapPin, ShieldCheck, Ruler, Layers, ChevronRight, X, Calculator, Eye
@@ -14,6 +14,7 @@ interface ReadyCollectionProps {
 
 export const ReadyCollection: React.FC<ReadyCollectionProps> = ({ onReserveItem }) => {
   const { lang, t } = useLanguage();
+  const { content } = useContent();
   const { currency, formatPrice, currencySymbol } = useCurrency();
 
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -26,8 +27,8 @@ export const ReadyCollection: React.FC<ReadyCollectionProps> = ({ onReserveItem 
   const [calcHardware, setCalcHardware] = useState<string>('salice');
 
   const filteredItems = activeCategory === 'all'
-    ? READY_FURNITURE_CATALOG
-    : READY_FURNITURE_CATALOG.filter(item => item.category === activeCategory);
+    ? content.readyFurniture
+    : content.readyFurniture.filter(item => item.category === activeCategory);
 
   // Dynamic cost calculation for custom / bespoke pieces
   const calculateEstimate = () => {

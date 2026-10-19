@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { TRANSLATIONS, TranslationData } from '../i18n/translations';
+import { useContent } from './ContentContext';
 
 export type Language = 'ru' | 'en' | 'ky';
 
@@ -27,7 +28,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     localStorage.setItem('atelier_lang', newLang);
   };
 
-  const t = TRANSLATIONS[lang] || TRANSLATIONS.ru;
+  // Texts come from the published site content, so the admin panel can edit them
+  const { content } = useContent();
+  const t = content.translations[lang] || content.translations.ru;
 
   return (
     <LanguageContext.Provider value={{ lang, setLang, t }}>

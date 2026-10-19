@@ -1,82 +1,29 @@
 import React, { useState } from 'react';
 import { ArrowUpRight, Compass, ShieldCheck, Cpu, Sliders, Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useContent } from '../context/ContentContext';
 
 interface HeroProps {
   onOpenConsultation: () => void;
 }
 
-const HERO_SLIDES = [
-  {
-    title: {
-      ru: 'Монолитные кухни с островом из Calacatta',
-      en: 'Monolithic Kitchens with Calacatta Viola Island',
-      ky: 'Calacatta аралы бар монолиттүү ашканалар'
-    },
-    residence: {
-      ru: 'Пентхаус в ЖК Avangard City (Бишкек)',
-      en: 'Avangard City Penthouse (Bishkek)',
-      ky: 'Avangard City турак жайындагы пентхаус (Бишкек)'
-    },
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85',
-    tag: {
-      ru: 'Скрытые фасады · Копченый эвкалипт · Salice Air',
-      en: 'Concealed Fronts · Fumed Eucalyptus · Salice Air',
-      ky: 'Жашыруун фасаддар · Ышталган эвкалипт · Salice Air'
-    }
-  },
-  {
-    title: {
-      ru: 'Архитектурные гардеробные с подсветкой полок',
-      en: 'Architectural Dressing Suites with Integrated Lighting',
-      ky: 'Жарыгы бар архитектуралык гардеробдор'
-    },
-    residence: {
-      ru: 'КД Monaco (Бишкек, бул. Эркиндик)',
-      en: 'Monaco Club House (Erkindik Blvd, Bishkek)',
-      ky: 'Monaco клубдук үйү (Эркиндик бул., Бишкек)'
-    },
-    image: 'https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=2000&q=85',
-    tag: {
-      ru: 'Американский орех · Седельная кожа · Бронза',
-      en: 'American Walnut · Saddle Leather · Bronze',
-      ky: 'Америкалык жаңгак · Булгаары · Коло'
-    }
-  },
-  {
-    title: {
-      ru: 'Кабинеты буазери с потайными поворотными дверями',
-      en: 'Boiserie Executive Studies with Secret Pivot Doors',
-      ky: 'Жашыруун айланма эшиктүү буазери иш бөлмөлөрү'
-    },
-    residence: {
-      ru: 'Вилла в VIP-городке «Ала-Арча»',
-      en: 'Ala-Archa Luxury Residence',
-      ky: 'Ала-Арча VIP-шаарчасындагы вилла'
-    },
-    image: 'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=2000&q=85',
-    tag: {
-      ru: 'Мореный дуб · Латунь 3 мм · Петли FritsJurgens',
-      en: 'Bog Oak · Solid Brass 3mm · FritsJurgens Pivots',
-      ky: 'Эмен жыгачы · Латунь 3 мм · FritsJurgens илгичтери'
-    }
-  }
-];
-
 export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const { lang, t } = useLanguage();
+  const { content } = useContent();
+  const slides = content.heroSlides;
+  const slide = slides[Math.min(activeSlide, slides.length - 1)];
 
   return (
     <section className="relative min-h-[92vh] flex flex-col justify-between pt-28 pb-12 overflow-hidden border-b border-white/5">
       {/* Background Architectural Ambient Image */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={HERO_SLIDES[activeSlide].image}
-          alt={HERO_SLIDES[activeSlide].title[lang]}
+        {slide && <img
+          src={slide.image}
+          alt={slide.title[lang]}
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-center filter brightness-[0.42] contrast-[1.1] transition-all duration-700 ease-out scale-100"
-        />
+        />}
         <div className="absolute inset-0 bg-gradient-to-t from-[#141312] via-[#141312]/60 to-[#141312]/40" />
         <div className="absolute inset-0 bg-grid-pattern opacity-15" />
       </div>
@@ -129,9 +76,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
         {/* Ambient Slide Controls */}
         <div className="mt-14 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            {HERO_SLIDES.map((slide, idx) => (
+            {slides.map((item, idx) => (
               <button
-                key={slide.title.ru}
+                key={idx}
                 onClick={() => setActiveSlide(idx)}
                 className={`text-left px-3 py-2 rounded-sm transition-all text-xs cursor-pointer ${
                   activeSlide === idx
@@ -139,15 +86,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
                     : 'text-neutral-400 hover:text-neutral-200 bg-black/20'
                 }`}
               >
-                <div className="font-mono text-[10px] text-[#B38E5D] tracking-wider">0{idx + 1}</div>
-                <div className="truncate max-w-[200px] text-[11px] font-medium">{slide.residence[lang]}</div>
+                <div className="font-mono text-[10px] text-[#B38E5D] tracking-wider">{String(idx + 1).padStart(2, '0')}</div>
+                <div className="truncate max-w-[200px] text-[11px] font-medium">{item.residence[lang]}</div>
               </button>
             ))}
           </div>
 
           <div className="text-right text-xs text-neutral-400 hidden sm:block">
             <span className="text-[#B38E5D] font-mono">{t.hero.currentObject}</span>
-            <span className="text-white ml-2">{HERO_SLIDES[activeSlide].tag[lang]}</span>
+            <span className="text-white ml-2">{slide?.tag[lang]}</span>
           </div>
         </div>
       </div>

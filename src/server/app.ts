@@ -1,5 +1,6 @@
 import express from 'express';
 import { GoogleGenAI } from '@google/genai';
+import { createSiteRouter } from './siteRouter.js';
 
 // Atelier Architectura knowledge base for AI Concierge in Kyrgyzstan
 const ATELIER_SYSTEM_PROMPT = `
@@ -92,6 +93,7 @@ async function sendLeadToTelegram(lead: Record<string, any>) {
 // API routes shared by the local dev server (server.ts) and the Vercel function (api/index.ts)
 export function createApiApp() {
   const app = express();
+  app.set('trust proxy', true);
   app.use(express.json({ limit: '10mb' }));
 
   // AI Concierge API Route
@@ -193,6 +195,9 @@ export function createApiApp() {
       message: 'Ваша заявка принята. Ведущий технолог-конструктор свяжется с вами в течение 2 часов для обсуждения узлов и материалов.'
     });
   });
+
+  // Admin panel content, password and image uploads
+  app.use('/api', createSiteRouter());
 
   return app;
 }

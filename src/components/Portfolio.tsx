@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { CASE_STUDIES } from '../data/atelierData';
 import { CaseStudy, ZoneCategory, StyleCategory } from '../types';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
+import { useContent } from '../context/ContentContext';
 
 interface PortfolioProps {
   onSelectCase: (caseItem: CaseStudy) => void;
@@ -32,7 +32,8 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectCase }) => {
     { id: 'neoclassic', label: t.portfolio.neoclassic }
   ];
 
-  const filteredCases = CASE_STUDIES.filter((c) => {
+  const { content } = useContent();
+  const filteredCases = content.cases.filter((c) => {
     const matchesZone = selectedZone === 'all' || c.zone === selectedZone;
     const matchesStyle = selectedStyle === 'all' || c.style === selectedStyle;
     return matchesZone && matchesStyle;

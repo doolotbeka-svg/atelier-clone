@@ -5,6 +5,8 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
+import { useContent } from '../context/ContentContext';
+import { phoneHref } from '../content/siteContent';
 
 interface ShowroomAndFormProps {
   initialCaseTitle?: string;
@@ -12,6 +14,7 @@ interface ShowroomAndFormProps {
 
 export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTitle }) => {
   const { lang, t } = useLanguage();
+  const { contacts } = useContent().content;
   const { currency, currencySymbol } = useCurrency();
 
   const [formData, setFormData] = useState({
@@ -157,8 +160,8 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
                 <div className="flex items-start gap-3">
                   <Phone className="w-4 h-4 text-[#B38E5D] shrink-0 mt-0.5" />
                   <div>
-                    <a href="tel:+996312986800" className="text-white font-medium hover:text-[#B38E5D] transition-colors">
-                      {t.showroom.phoneLabel}
+                    <a href={phoneHref(contacts.phone)} className="text-white font-medium hover:text-[#B38E5D] transition-colors">
+                      {contacts.phone} / {contacts.whatsapp}
                     </a>
                     <div className="text-neutral-500 mt-0.5">{t.showroom.phoneSub}</div>
                   </div>

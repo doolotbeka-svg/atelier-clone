@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import { MATERIALS_LIBRARY } from '../data/atelierData';
 import { MaterialItem } from '../types';
 import { Check, Sparkles, Sliders } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useContent } from '../context/ContentContext';
 
 export const MaterialsHub: React.FC = () => {
-  const [selectedMaterial, setSelectedMaterial] = useState<MaterialItem>(MATERIALS_LIBRARY[0]);
+  const { content } = useContent();
+  const materials = content.materials;
+  const [selectedId, setSelectedId] = useState<string | undefined>(materials[0]?.id);
+  const selectedMaterial: MaterialItem | undefined = materials.find((m) => m.id === selectedId) ?? materials[0];
+
   const [activeEngineeringTab, setActiveEngineeringTab] = useState<'materials' | 'engineering'>('materials');
   const { t } = useLanguage();
+
+  // All materials removed in the admin panel: hide the section
+  if (!selectedMaterial) return null;
 
   return (
     <section id="materials" className="py-28 bg-[#181615] border-b border-white/5 relative">
@@ -55,12 +62,12 @@ export const MaterialsHub: React.FC = () => {
               <div className="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-2">
                 {t.materials.selectHint}
               </div>
-              {MATERIALS_LIBRARY.map((mat) => {
-                const isSelected = selectedMaterial.id === mat.id;
+              {materials.map((mat) => {
+                const isSelected = selectedMaterial?.id === mat.id;
                 return (
                   <button
                     key={mat.id}
-                    onClick={() => setSelectedMaterial(mat)}
+                    onClick={() => setSelectedId(mat.id)}
                     className={`w-full text-left p-4 rounded-sm border transition-all flex items-center justify-between cursor-pointer ${
                       isSelected
                         ? 'bg-[#221F1C] border-[#B38E5D] shadow-md'

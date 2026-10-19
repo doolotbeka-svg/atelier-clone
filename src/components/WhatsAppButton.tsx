@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useContent } from '../context/ContentContext';
+import { whatsappNumber } from '../content/siteContent';
 
 export const WhatsAppButton: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { lang, t } = useLanguage();
-  const phoneNumber = '996555926800';
-
-  const defaultMessages: Record<string, string> = {
-    ru: 'Здравствуйте! Хочу проконсультироваться с ведущим технологом Atelier Architectura (Бишкек) по поводу мебели.',
-    en: 'Hello! I would like to consult with the lead technologist at Atelier Architectura (Bishkek) regarding bespoke or ready furniture.',
-    ky: 'Саламатсызбы! Жеке же даяр эмерек боюнча Atelier Architectura (Бишкек) башкы технологу менен кеңешким келет.'
-  };
-
-  const messageText = encodeURIComponent(defaultMessages[lang] || defaultMessages.ru);
+  const { contacts } = useContent().content;
+  const phoneNumber = whatsappNumber(contacts.whatsapp);
+  const messageText = encodeURIComponent(contacts.whatsappMessage[lang] || contacts.whatsappMessage.ru);
 
   return (
     <div className="fixed bottom-6 left-6 z-40 flex items-center gap-3">

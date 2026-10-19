@@ -1,9 +1,12 @@
 import React from 'react';
 import { Send, Instagram, Youtube, Phone, Mail, MapPin } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useContent } from '../context/ContentContext';
+import { phoneHref } from '../content/siteContent';
 
 export const Footer: React.FC = () => {
   const { t } = useLanguage();
+  const { contacts } = useContent().content;
 
   return (
     <footer className="bg-[#11100F] text-neutral-400 text-xs font-light border-t border-white/10 pt-20 pb-12">
@@ -63,14 +66,14 @@ export const Footer: React.FC = () => {
               {t.footer.contactsTitle}
             </div>
             <div className="space-y-2 font-mono">
-              <a href="tel:+996312986800" className="text-white hover:text-[#B38E5D] transition-colors block">
-                +996 (312) 98-68-00
+              <a href={phoneHref(contacts.phone)} className="text-white hover:text-[#B38E5D] transition-colors block">
+                {contacts.phone}
               </a>
-              <a href="tel:+996555926800" className="text-neutral-300 hover:text-[#B38E5D] transition-colors block text-[11px]">
-                +996 (555) 92-68-00 (WhatsApp)
+              <a href={phoneHref(contacts.whatsapp)} className="text-neutral-300 hover:text-[#B38E5D] transition-colors block text-[11px]">
+                {contacts.whatsapp} (WhatsApp)
               </a>
-              <a href="mailto:atelier@architectura.kg" className="hover:text-white transition-colors block text-[11px]">
-                atelier@architectura.kg
+              <a href={`mailto:${contacts.email}`} className="hover:text-white transition-colors block text-[11px]">
+                {contacts.email}
               </a>
             </div>
 
@@ -80,7 +83,7 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center gap-3">
                 <a
-                  href="https://t.me"
+                  href={contacts.telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-sm bg-white/5 hover:bg-[#B38E5D] hover:text-black transition-colors flex items-center justify-center text-neutral-300"
@@ -89,7 +92,7 @@ export const Footer: React.FC = () => {
                   <Send className="w-4 h-4" />
                 </a>
                 <a
-                  href="https://youtube.com"
+                  href={contacts.youtubeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-sm bg-white/5 hover:bg-[#B38E5D] hover:text-black transition-colors flex items-center justify-center text-neutral-300"
@@ -98,7 +101,7 @@ export const Footer: React.FC = () => {
                   <Youtube className="w-4 h-4" />
                 </a>
                 <a
-                  href="https://instagram.com"
+                  href={contacts.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-sm bg-white/5 hover:bg-[#B38E5D] hover:text-black transition-colors flex items-center justify-center text-neutral-300"
