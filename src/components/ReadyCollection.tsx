@@ -98,19 +98,6 @@ export const ReadyCollection: React.FC<ReadyCollectionProps> = ({ onReserveItem 
               {t.readyCollection.subtitle}
             </p>
           </div>
-
-          {/* Currency indicator notification */}
-          <div className="bg-[#1D1B19] border border-white/10 px-4 py-3 rounded-sm flex items-center gap-3 shrink-0">
-            <div className="w-2 h-2 rounded-full bg-[#B38E5D] animate-ping" />
-            <div className="text-xs text-neutral-300 font-mono">
-              <span className="text-neutral-500 uppercase tracking-wider block text-[10px]">
-                {lang === 'ky' ? 'Учурдагы валюта' : lang === 'en' ? 'Active Currency' : 'Текущая валюта'}:
-              </span>
-              <span className="text-white font-semibold">
-                {currency === 'KGS' ? 'Кыргыз сому (KGS)' : 'Российский рубль (RUB / ₽)'}
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* Category Filters */}
