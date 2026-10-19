@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
+import { useContent } from '../context/ContentContext';
 import {
   CUSTOM_FINISH_ID,
   ConfiguratorState,
@@ -40,61 +41,6 @@ import type { CameraView } from './configurator/ConfiguratorScene';
 
 // three.js is loaded only when the visitor scrolls near the configurator
 const ConfiguratorScene = lazy(() => import('./configurator/ConfiguratorScene'));
-
-const UI = {
-  kicker: { ru: '3D-конструктор', en: '3D configurator', ky: '3D-конструктор' },
-  title: { ru: 'Соберите свой проект в 3D', en: 'Design your piece in 3D', ky: 'Долбооруңузду 3D форматта түзүңүз' },
-  subtitle: {
-    ru: 'Вращайте модель, меняйте материалы и размеры, добавляйте и убирайте модули — стоимость пересчитывается сразу. Готовый проект отправьте технологу одним нажатием.',
-    en: 'Rotate the model, change materials and dimensions, add or remove modules — the estimate updates instantly. Send the finished design to our technologist in one click.',
-    ky: 'Моделди айлантыңыз, материалдарды жана өлчөмдөрдү өзгөртүңүз, модулдарды кошуп же алып салыңыз — баасы дароо кайра эсептелет. Даяр долбоорду технологго бир басуу менен жөнөтүңүз.'
-  },
-  hint: { ru: 'Мышь / палец — вращать · колесо / щипок — масштаб · клик по модулю — выбрать', en: 'Drag to rotate · scroll / pinch to zoom · click a module to select', ky: 'Сүйрөп айлантыңыз · дөңгөлөк менен чоңойтуңуз · модулду басып тандаңыз' },
-  views: {
-    perspective: { ru: '3/4', en: '3/4', ky: '3/4' },
-    front: { ru: 'Фронт', en: 'Front', ky: 'Алдынан' },
-    top: { ru: 'Сверху', en: 'Top', ky: 'Үстүнөн' }
-  },
-  openFronts: { ru: 'Открыть фасады', en: 'Open fronts', ky: 'Фасаддарды ачуу' },
-  closeFronts: { ru: 'Закрыть фасады', en: 'Close fronts', ky: 'Фасаддарды жабуу' },
-  resetView: { ru: 'Вид', en: 'View', ky: 'Көрүнүш' },
-  tabs: {
-    modules: { ru: 'Модули', en: 'Modules', ky: 'Модулдар' },
-    materials: { ru: 'Материалы', en: 'Materials', ky: 'Материалдар' },
-    size: { ru: 'Размеры', en: 'Size', ky: 'Өлчөмдөр' }
-  },
-  selected: { ru: 'Выбранный модуль', en: 'Selected module', ky: 'Тандалган модуль' },
-  selectHint: { ru: 'Нажмите на модуль на 3D-сцене или в ленте под ней, чтобы изменить его.', en: 'Click a module in the 3D scene or in the strip below it to edit it.', ky: 'Өзгөртүү үчүн 3D сахнадагы же астындагы тилкедеги модулду басыңыз.' },
-  type: { ru: 'Тип', en: 'Type', ky: 'Түрү' },
-  width: { ru: 'Ширина', en: 'Width', ky: 'Туурасы' },
-  moveLeft: { ru: 'Левее', en: 'Move left', ky: 'Солго' },
-  moveRight: { ru: 'Правее', en: 'Move right', ky: 'Оңго' },
-  duplicate: { ru: 'Копия', en: 'Duplicate', ky: 'Көчүрмө' },
-  remove: { ru: 'Удалить', en: 'Remove', ky: 'Өчүрүү' },
-  add: { ru: 'Добавить модуль', en: 'Add a module', ky: 'Модуль кошуу' },
-  maxModules: { ru: 'Максимум модулей', en: 'Module limit reached', ky: 'Модулдардын эң көп саны' },
-  fronts: { ru: 'Фасады', en: 'Fronts', ky: 'Фасаддар' },
-  body: { ru: 'Корпус и полки', en: 'Carcass & shelves', ky: 'Корпус жана текчелер' },
-  top: { ru: 'Столешница', en: 'Worktop', ky: 'Столешница' },
-  handles: { ru: 'Ручки', en: 'Handles', ky: 'Туткалар' },
-  customColor: { ru: 'Свой цвет', en: 'Custom colour', ky: 'Өз түсүңүз' },
-  height: { ru: 'Высота', en: 'Height', ky: 'Бийиктиги' },
-  depth: { ru: 'Глубина', en: 'Depth', ky: 'Тереңдиги' },
-  totalWidth: { ru: 'Общая ширина', en: 'Total width', ky: 'Жалпы туурасы' },
-  upperCabinets: { ru: 'Верхние шкафы', en: 'Wall cabinets', ky: 'Үстүңкү шкафтар' },
-  island: { ru: 'Кухонный остров', en: 'Kitchen island', ky: 'Ашкана аралы' },
-  islandWidth: { ru: 'Длина острова', en: 'Island length', ky: 'Аралдын узундугу' },
-  islandDepth: { ru: 'Глубина острова', en: 'Island depth', ky: 'Аралдын тереңдиги' },
-  wallPanel: { ru: 'Стеновая панель', en: 'Wall panel', ky: 'Дубал панели' },
-  lighting: { ru: 'LED-подсветка', en: 'LED lighting', ky: 'LED жарык' },
-  estimate: { ru: 'Ориентировочная стоимость', en: 'Estimated cost', ky: 'Болжолдуу баасы' },
-  estimateNote: { ru: 'Точная смета — после замера и деталировки узлов', en: 'Final quote after site survey and detailing', ky: 'Так смета — өлчөөдөн жана деталдаштыруудан кийин' },
-  send: { ru: 'Отправить проект технологу', en: 'Send design to technologist', ky: 'Долбоорду технологго жөнөтүү' },
-  reset: { ru: 'Сбросить', en: 'Reset', ky: 'Баштапкы' },
-  loading: { ru: 'Загружаем 3D-сцену…', en: 'Loading 3D scene…', ky: '3D сахна жүктөлүүдө…' },
-  webglError: { ru: 'Ваш браузер не поддерживает 3D (WebGL). Откройте страницу в Chrome, Safari или Edge.', en: 'Your browser does not support 3D (WebGL). Please open the page in Chrome, Safari or Edge.', ky: 'Браузериңиз 3D (WebGL) колдобойт. Баракты Chrome, Safari же Edge аркылуу ачыңыз.' },
-  cm: { ru: 'см', en: 'cm', ky: 'см' }
-} satisfies Record<string, Localized | Record<string, Localized>>;
 
 type Tab = 'modules' | 'materials' | 'size';
 
@@ -123,10 +69,12 @@ interface SwatchPickerProps {
   value: string;
   onChange: (id: string) => void;
   lang: keyof Localized;
+  labels: Record<string, Localized>;
   custom?: { color: string; onColor: (c: string) => void; label: string };
 }
 
-function SwatchPicker({ finishes, value, onChange, lang, custom }: SwatchPickerProps) {
+function SwatchPicker({ finishes, value, onChange, lang, labels, custom }: SwatchPickerProps) {
+  const name = (f: Finish) => (labels[f.id] || f.label)[lang] || f.label.ru;
   const active = finishes.find((f) => f.id === value);
   return (
     <div>
@@ -136,8 +84,8 @@ function SwatchPicker({ finishes, value, onChange, lang, custom }: SwatchPickerP
             key={f.id}
             type="button"
             onClick={() => onChange(f.id)}
-            title={f.label[lang]}
-            aria-label={f.label[lang]}
+            title={name(f)}
+            aria-label={name(f)}
             aria-pressed={value === f.id}
             className={`w-9 h-9 rounded-sm border transition-all cursor-pointer ${value === f.id ? 'border-[#B38E5D] ring-2 ring-[#B38E5D]/40 scale-105' : 'border-white/15 hover:border-white/40'}`}
             style={{ background: swatchBackground(f) }}
@@ -164,7 +112,7 @@ function SwatchPicker({ finishes, value, onChange, lang, custom }: SwatchPickerP
         )}
       </div>
       <div className="mt-2 text-[11px] font-mono text-neutral-400">
-        {value === CUSTOM_FINISH_ID && custom ? `${custom.label} · ${custom.color.toUpperCase()}` : active?.label[lang]}
+        {value === CUSTOM_FINISH_ID && custom ? `${custom.label} · ${custom.color.toUpperCase()}` : active && name(active)}
       </div>
     </div>
   );
@@ -220,6 +168,8 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
   const { lang } = useLanguage();
   const { formatPrice } = useCurrency();
   const L = (l: Localized) => l[lang] || l.ru;
+  const texts = useContent().content.configurator;
+  const UI = texts.ui;
 
   const [state, setState] = useState<ConfiguratorState>(() => createInitialState('kitchen'));
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -228,6 +178,27 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
   const [fitKey, setFitKey] = useState(0);
   const [sceneRequested, setSceneRequested] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [sceneVisible, setSceneVisible] = useState(false);
+  const [pageVisible, setPageVisible] = useState(() => document.visibilityState !== 'hidden');
+
+  // Render the 3D scene only while it is on screen and the tab is open
+  useEffect(() => {
+    const node = viewportRef.current;
+    if (!node || !('IntersectionObserver' in window)) {
+      setSceneVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => setSceneVisible(entries.some((e) => e.isIntersecting)));
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onVisibility = () => setPageVisible(document.visibilityState !== 'hidden');
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -342,7 +313,7 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
               onClick={() => switchPreset(id)}
               className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider rounded-sm border transition-colors cursor-pointer ${state.preset === id ? 'bg-[#B38E5D] text-[#141312] border-[#B38E5D] font-semibold' : 'border-white/10 text-neutral-300 hover:border-white/30 hover:text-white'}`}
             >
-              {L(PRESETS[id].label)}
+              {L(texts.presets[id])}
             </button>
           ))}
         </div>
@@ -350,11 +321,11 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* 3D viewport */}
           <div className="lg:col-span-8 min-w-0">
-            <div className="relative h-[380px] sm:h-[460px] lg:h-[560px] bg-[#1D1B19] border border-white/10 rounded-sm overflow-hidden">
+            <div ref={viewportRef} className="relative h-[380px] sm:h-[460px] lg:h-[560px] bg-[#1D1B19] border border-white/10 rounded-sm overflow-hidden">
               {sceneRequested ? (
                 <SceneErrorBoundary fallback={<div className="absolute inset-0 flex items-center justify-center p-8 text-center text-sm text-neutral-400">{L(UI.webglError)}</div>}>
                   <Suspense fallback={sceneFallback}>
-                    <ConfiguratorScene state={state} selectedId={selectedId} onSelect={selectModule} view={view} fitKey={fitKey} />
+                    <ConfiguratorScene state={state} selectedId={selectedId} onSelect={selectModule} view={view} fitKey={fitKey} active={sceneVisible && pageVisible} />
                   </Suspense>
                 </SceneErrorBoundary>
               ) : (
@@ -412,7 +383,7 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
                   style={{ flexGrow: m.width, flexBasis: 0 }}
                   className={`min-w-[64px] px-2 py-2 text-left rounded-sm border transition-colors cursor-pointer ${m.id === selectedId ? 'border-[#B38E5D] bg-[#B38E5D]/10' : 'border-white/10 hover:border-white/30 bg-[#1D1B19]'}`}
                 >
-                  <div className="text-[10px] text-neutral-300 leading-tight line-clamp-2">{L(MODULE_LABELS[m.type])}</div>
+                  <div className="text-[10px] text-neutral-300 leading-tight line-clamp-2">{L(texts.modules[m.type])}</div>
                   <div className="text-[10px] font-mono text-[#B38E5D] mt-1">{m.width}</div>
                 </button>
               ))}
@@ -469,7 +440,7 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
                               onClick={() => updateSelected({ type })}
                               className={`px-2.5 py-2 text-[11px] text-left rounded-sm border transition-colors cursor-pointer ${selected.type === type ? 'border-[#B38E5D] text-white bg-[#B38E5D]/10' : 'border-white/10 text-neutral-400 hover:text-white hover:border-white/30'}`}
                             >
-                              {L(MODULE_LABELS[type])}
+                              {L(texts.modules[type])}
                             </button>
                           ))}
                         </div>
@@ -519,7 +490,7 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
                           className="flex items-center gap-1.5 px-2.5 py-2 text-[11px] text-left rounded-sm border border-white/10 text-neutral-300 hover:text-white hover:border-[#B38E5D]/60 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                         >
                           <Plus className="w-3 h-3 text-[#B38E5D] shrink-0" />
-                          {L(MODULE_LABELS[type])}
+                          {L(texts.modules[type])}
                         </button>
                       ))}
                     </div>
@@ -536,6 +507,7 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
                       value={state.frontFinish}
                       onChange={(frontFinish) => update({ frontFinish })}
                       lang={lang}
+                      labels={texts.finishes}
                       custom={{ color: state.customFrontColor, onColor: (customFrontColor) => update({ customFrontColor }), label: L(UI.customColor) }}
                     />
                   </div>
@@ -546,13 +518,14 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
                       value={state.bodyFinish}
                       onChange={(bodyFinish) => update({ bodyFinish })}
                       lang={lang}
+                      labels={texts.finishes}
                       custom={{ color: state.customBodyColor, onColor: (customBodyColor) => update({ customBodyColor }), label: L(UI.customColor) }}
                     />
                   </div>
                   {state.preset !== 'wardrobe' && (
                     <div>
                       <div className="text-[11px] uppercase font-mono tracking-wider text-neutral-500 mb-3">{L(UI.top)}</div>
-                      <SwatchPicker finishes={TOP_FINISHES} value={state.topFinish} onChange={(topFinish) => update({ topFinish })} lang={lang} />
+                      <SwatchPicker finishes={TOP_FINISHES} value={state.topFinish} onChange={(topFinish) => update({ topFinish })} lang={lang} labels={texts.finishes} />
                     </div>
                   )}
                   <div>
@@ -566,7 +539,7 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
                           className={`w-full flex items-center gap-2.5 px-3 py-2 text-[11px] text-left rounded-sm border transition-colors cursor-pointer ${state.handles === h ? 'border-[#B38E5D] text-white bg-[#B38E5D]/10' : 'border-white/10 text-neutral-400 hover:text-white'}`}
                         >
                           <span className="w-3 h-3 rounded-full border border-white/20" style={{ background: h === 'brass' ? '#B38E5D' : h === 'black' ? '#171717' : 'transparent' }} />
-                          {L(HANDLE_LABELS[h])}
+                          {L(texts.handles[h])}
                         </button>
                       ))}
                     </div>
@@ -610,7 +583,7 @@ export const Configurator3D: React.FC<Configurator3DProps> = ({ onSendToTechnolo
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => onSendToTechnologist(describeConfiguration(state, priceText))}
+                  onClick={() => onSendToTechnologist(describeConfiguration(state, priceText, texts))}
                   className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[#E8E4DF] hover:bg-[#B38E5D] text-[#141312] hover:text-white text-xs font-semibold uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5" />

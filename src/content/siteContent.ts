@@ -3,6 +3,8 @@ import { CASE_STUDIES, MATERIALS_LIBRARY } from '../data/atelierData';
 import { READY_FURNITURE_CATALOG } from '../data/readyFurnitureData';
 import { HERO_SLIDES, HeroSlide } from '../data/heroSlides';
 import type { CaseStudy, MaterialItem, ReadyFurnitureItem } from '../types';
+import { FORM_TEXTS, FormTexts } from '../data/formTexts';
+import { CONFIGURATOR_TEXTS, ConfiguratorTexts } from '../components/configurator/configuratorTexts';
 
 export type Language = 'ru' | 'en' | 'ky';
 
@@ -23,6 +25,8 @@ export interface SiteContent {
   cases: CaseStudy[];
   readyFurniture: ReadyFurnitureItem[];
   materials: MaterialItem[];
+  form: FormTexts;
+  configurator: ConfiguratorTexts;
   translations: Record<Language, TranslationData>;
   updatedAt?: string;
 }
@@ -45,6 +49,8 @@ export const DEFAULT_CONTENT: SiteContent = {
   cases: CASE_STUDIES,
   readyFurniture: READY_FURNITURE_CATALOG,
   materials: MATERIALS_LIBRARY,
+  form: FORM_TEXTS,
+  configurator: CONFIGURATOR_TEXTS,
   translations: TRANSLATIONS
 };
 

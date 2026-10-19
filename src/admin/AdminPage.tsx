@@ -7,7 +7,7 @@ import { FieldEditor } from './FieldEditor';
 import { HIDDEN_TEXT_PATHS, TEXT_SECTION_LABELS } from './labels';
 import { combineLanguages, pickLanguage } from './translationTree';
 
-type DataSection = 'contacts' | 'heroSlides' | 'cases' | 'readyFurniture' | 'materials';
+type DataSection = 'contacts' | 'heroSlides' | 'cases' | 'readyFurniture' | 'materials' | 'form' | 'configurator';
 type SectionId = DataSection | 'texts' | 'security';
 
 const SECTIONS: { id: SectionId; label: string; hint: string }[] = [
@@ -16,6 +16,8 @@ const SECTIONS: { id: SectionId; label: string; hint: string }[] = [
   { id: 'cases', label: 'Портфолио', hint: 'Реализованные проекты: фото, чертёж, галерея, описание, материалы, цена.' },
   { id: 'readyFurniture', label: 'Готовая мебель', hint: 'Каталог мебели в наличии: фото, названия, размеры, материалы и цены.' },
   { id: 'materials', label: 'Материалы', hint: 'Библиотека материалов в разделе «Материалы».' },
+  { id: 'form', label: 'Форма заявки', hint: 'Типы проектов и бюджеты в форме, подсказки в полях, подпись про визит в шоурум, заголовок карты.' },
+  { id: 'configurator', label: '3D-конструктор', hint: 'Все надписи конструктора: заголовки, кнопки, вкладки, названия мебели, модулей, материалов и ручек.' },
   { id: 'texts', label: 'Тексты сайта', hint: 'Все надписи сайта. Каждая фраза — сразу на трёх языках: RU, EN и KG.' },
   { id: 'security', label: 'Пароль', hint: 'Смена пароля входа в админ-панель.' }
 ];

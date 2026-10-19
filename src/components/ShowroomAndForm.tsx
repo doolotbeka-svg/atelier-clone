@@ -14,7 +14,7 @@ interface ShowroomAndFormProps {
 
 export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTitle }) => {
   const { lang, t } = useLanguage();
-  const { contacts } = useContent().content;
+  const { contacts, form: formTexts } = useContent().content;
   const { currency, currencySymbol } = useCurrency();
 
   const [formData, setFormData] = useState({
@@ -63,6 +63,9 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          // Labels as the visitor saw them, so options added in the admin panel reach Telegram readably
+          projectTypeLabel: projectTypes.find((p) => p.id === formData.projectType)?.label.ru,
+          budgetLabel: budgetTiers.find((b) => b.id === formData.budget)?.label.ru,
           lang,
           currency,
           hasFile: !!attachedFile,
@@ -79,28 +82,8 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
     }
   };
 
-  const projectTypes = [
-    { id: 'ready_furniture', label: { ru: 'Готовая мебель из наличия в шоуруме', en: 'Ready Furniture from Showroom Stock', ky: 'Шоурумда бар даяр эмерек' } },
-    { id: 'kitchen', label: { ru: 'Кухонный гарнитур и остров', en: 'Kitchen Cabinetry & Island', ky: 'Ашкана гарнитуру жана арал' } },
-    { id: 'wardrobe', label: { ru: 'Мастер-гардеробная комната', en: 'Master Dressing Room', ky: 'Мастер-гардероб бөлмөсү' } },
-    { id: 'living', label: { ru: 'Гостиная зона & ТВ-консоль', en: 'Living Area & TV Console', ky: 'Конок бөлмө жана ТВ-консоль' } },
-    { id: 'cabinet', label: { ru: 'Кабинет & библиотека', en: 'Private Study & Library', ky: 'Иш бөлмө жана китепкана' } },
-    { id: 'complex', label: { ru: 'Комплексная меблировка виллы/пентхауса', en: 'Full Villa/Penthouse Fitout', ky: 'Вилланы/пентхаусту толук эмеректөө' } },
-  ];
-
-  const budgetTiers = currency === 'KGS' 
-    ? [
-        { id: 'from_1_5m', label: { ru: '1.5 – 3 млн сом', en: '1.5M – 3M KGS', ky: '1.5 – 3 млн сом' } },
-        { id: 'from_3m', label: { ru: '3 – 7 млн сом', en: '3M – 7M KGS', ky: '3 – 7 млн сом' } },
-        { id: 'from_7m', label: { ru: '7 – 15 млн сом', en: '7M – 15M KGS', ky: '7 – 15 млн сом' } },
-        { id: 'above_15m', label: { ru: 'Более 15 млн сом (High-End)', en: '15M+ KGS (Luxury)', ky: '15 млн сомдон жогору (High-End)' } }
-      ]
-    : [
-        { id: 'from_1_5m', label: { ru: 'От 1.5 до 3 млн ₽', en: '1.5M – 3M RUB', ky: '1.5 – 3 млн рубль' } },
-        { id: 'from_3m', label: { ru: 'От 3 до 7 млн ₽', en: '3M – 7M RUB', ky: '3 – 7 млн рубль' } },
-        { id: 'from_7m', label: { ru: 'От 7 до 15 млн ₽', en: '7M – 15M RUB', ky: '7 – 15 млн рубль' } },
-        { id: 'above_15m', label: { ru: 'Более 15 млн ₽ (High-End)', en: '15M+ RUB (Luxury)', ky: '15 млн рублден жогору (High-End)' } }
-      ];
+  const projectTypes = formTexts.projectTypes;
+  const budgetTiers = currency === 'KGS' ? formTexts.budgetsKgs : formTexts.budgetsRub;
 
   return (
     <section id="showroom" className="py-28 bg-[#181615] border-b border-white/5 relative">
@@ -173,7 +156,7 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
             <div className="bg-[#1D1B19] border border-white/10 rounded-sm overflow-hidden">
               <div className="p-4 bg-[#141312] border-b border-white/5 flex items-center justify-between">
                 <div className="text-xs uppercase font-mono tracking-wider text-neutral-400">
-                  {lang === 'ky' ? 'Бишкек картасы' : lang === 'en' ? 'Bishkek Showroom Map' : 'Карта проезда · Бишкек'}
+                  {formTexts.mapTitle[lang]}
                 </div>
                 <div className="flex items-center gap-1">
                   <button
@@ -284,7 +267,7 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder={lang === 'ky' ? 'Аты-жөнүңүз' : lang === 'en' ? 'Full Name' : 'Иван Демидов'}
+                      placeholder={formTexts.namePlaceholder[lang]}
                       className="w-full bg-[#141312] border border-white/10 px-4 py-3 rounded-sm text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-[#B38E5D]"
                     />
                   </div>
@@ -299,7 +282,7 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+996 (555) 00-00-00"
+                      placeholder={formTexts.phonePlaceholder}
                       className="w-full bg-[#141312] border border-white/10 px-4 py-3 rounded-sm text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-[#B38E5D]"
                     />
                   </div>
@@ -392,7 +375,7 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
                     rows={3}
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    placeholder={lang === 'ky' ? 'Материалдар же чиймелер боюнча каалоолор...' : lang === 'en' ? 'Notes regarding materials or drawings...' : 'Опишите ваши предпочтения по шпону, камню, габаритам или укажите адрес объекта в Бишкеке/Иссык-Куле...'}
+                    placeholder={formTexts.notesPlaceholder[lang]}
                     className="w-full bg-[#141312] border border-white/10 px-4 py-3 rounded-sm text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-[#B38E5D]"
                   />
                 </div>
@@ -407,11 +390,7 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
                     className="w-4 h-4 rounded bg-[#141312] border-white/20 text-[#B38E5D] accent-[#B38E5D] cursor-pointer"
                   />
                   <label htmlFor="visitShowroom" className="text-xs text-neutral-300 font-light cursor-pointer">
-                    {lang === 'ky' 
-                      ? 'Бишкектеги шоурумга жолугушууну пландоо (бул. Эркиндик, 35)' 
-                      : lang === 'en' 
-                      ? 'Schedule private showroom consultation in Bishkek' 
-                      : 'Хочу лично посетить шоурум в Бишкеке для подбора материалов при правильном свете'}
+                    {formTexts.visitShowroomLabel[lang]}
                   </label>
                 </div>
 

@@ -1,4 +1,4 @@
-import { Language } from '../../context/LanguageContext';
+import type { Language } from '../../context/LanguageContext';
 
 export type Localized = Record<Language, string>;
 
@@ -315,20 +315,25 @@ export function newModuleId(): string {
 }
 
 // Plain-text summary of the configuration for the technologist (form / Telegram)
-export function describeConfiguration(state: ConfiguratorState, priceText: string): string {
+// Labels come from the editable site texts; the technologist always gets the Russian ones
+export function describeConfiguration(
+  state: ConfiguratorState,
+  priceText: string,
+  texts: { presets: Record<PresetId, Localized>; modules: Record<ModuleType, Localized>; finishes: Record<string, Localized>; handles: Record<HandleStyle, Localized> }
+): string {
   const ru = (l: Localized) => l.ru;
   const front = resolveFinish(state.frontFinish, state.customFrontColor);
   const body = resolveFinish(state.bodyFinish, state.customBodyColor);
   const top = resolveFinish(state.topFinish, state.customFrontColor);
-  const finishText = (f: Finish) => (f.id === CUSTOM_FINISH_ID ? `лак ${f.color}` : ru(f.label));
+  const finishText = (f: Finish) => (f.id === CUSTOM_FINISH_ID ? `лак ${f.color}` : ru(texts.finishes[f.id] || f.label));
 
   const parts = [
-    `3D-конструктор: ${ru(PRESETS[state.preset].label)}, ${totalWidth(state)} × ${state.height} × ${state.depth} см`,
-    `Модули слева направо: ${state.modules.map((m) => `${ru(MODULE_LABELS[m.type])} ${m.width} см`).join('; ')}`,
+    `3D-конструктор: ${ru(texts.presets[state.preset])}, ${totalWidth(state)} × ${state.height} × ${state.depth} см`,
+    `Модули слева направо: ${state.modules.map((m) => `${ru(texts.modules[m.type])} ${m.width} см`).join('; ')}`,
     `Фасады: ${finishText(front)}; корпус: ${finishText(body)}`
   ];
   if (state.preset !== 'wardrobe') parts.push(`Столешница: ${finishText(top)}`);
-  parts.push(`Ручки: ${ru(HANDLE_LABELS[state.handles])}`);
+  parts.push(`Ручки: ${ru(texts.handles[state.handles])}`);
 
   const options: string[] = [];
   if (state.preset === 'kitchen' && state.upperCabinets) options.push('верхние шкафы');

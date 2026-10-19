@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { X, CheckCircle2, ShieldCheck, Send, Upload, FileText } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
+import { useContent } from '../context/ContentContext';
 
 interface ConsultationModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 }) => {
   const { lang, t } = useLanguage();
   const { currency, currencySymbol } = useCurrency();
+  const formTexts = useContent().content.form;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -149,7 +151,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                 <input
                   type="text"
                   required
-                  placeholder="Константин / Alexander"
+                  placeholder={formTexts.modalNamePlaceholder[lang]}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-2.5 bg-[#141312] border border-white/10 rounded-sm text-sm text-white focus:outline-none focus:border-[#B38E5D]"
@@ -163,7 +165,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                 <input
                   type="tel"
                   required
-                  placeholder="+996 (555) 00-00-00"
+                  placeholder={formTexts.phonePlaceholder}
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full px-4 py-2.5 bg-[#141312] border border-white/10 rounded-sm text-sm text-white focus:outline-none focus:border-[#B38E5D]"
@@ -201,7 +203,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                 </label>
                 <textarea
                   rows={2}
-                  placeholder="Notes..."
+                  placeholder={formTexts.modalNotesPlaceholder[lang]}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-2 bg-[#141312] border border-white/10 rounded-sm text-xs text-white focus:outline-none focus:border-[#B38E5D] resize-none"
