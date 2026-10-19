@@ -40,9 +40,9 @@ export const DEFAULT_CONTENT: SiteContent = {
     instagramUrl: 'https://instagram.com',
     youtubeUrl: 'https://youtube.com',
     whatsappMessage: {
-      ru: 'Здравствуйте! Хочу проконсультироваться с ведущим технологом Atelier Architectura (Бишкек) по поводу мебели.',
-      en: 'Hello! I would like to consult with the lead technologist at Atelier Architectura (Bishkek) regarding bespoke or ready furniture.',
-      ky: 'Саламатсызбы! Жеке же даяр эмерек боюнча Atelier Architectura (Бишкек) башкы технологу менен кеңешким келет.'
+      ru: 'Здравствуйте! Хочу проконсультироваться с ведущим технологом Atelier Architectura (Ош) по поводу мебели.',
+      en: 'Hello! I would like to consult with the lead technologist at Atelier Architectura (Osh) regarding bespoke or ready furniture.',
+      ky: 'Саламатсызбы! Жеке же даяр эмерек боюнча Atelier Architectura (Ош) башкы технологу менен кеңешким келет.'
     }
   },
   heroSlides: HERO_SLIDES,

@@ -71,7 +71,7 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
           hasFile: !!attachedFile,
           fileName: attachedFile?.name,
           country: 'Kyrgyzstan',
-          city: 'Bishkek'
+          city: 'Osh'
         })
       });
     } catch (err) {
@@ -152,7 +152,7 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
               </div>
             </div>
 
-            {/* Interactive Map UI for Bishkek */}
+            {/* Interactive showroom map */}
             <div className="bg-[#1D1B19] border border-white/10 rounded-sm overflow-hidden">
               <div className="p-4 bg-[#141312] border-b border-white/5 flex items-center justify-between">
                 <div className="text-xs uppercase font-mono tracking-wider text-neutral-400">
@@ -182,14 +182,14 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
                 </div>
               </div>
 
-              {/* Styled Stylized Architectural Map Graphic centered on Erkindik Boulevard */}
+              {/* Stylised map graphic; street labels come from the editable form texts */}
               <div className="relative aspect-[16/10] bg-[#121110] p-6 flex flex-col justify-between overflow-hidden">
                 <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 500 300">
-                  {/* Central Boulevard Erkindik with green park stripe */}
+                  {/* Central boulevard with green park stripe */}
                   <rect x="230" y="0" width="40" height="300" fill="#1B261D" />
                   <path d="M 250,0 L 250,300" stroke="#B38E5D" strokeWidth="2" strokeDasharray="6 3" fill="none" />
                   
-                  {/* Cross Streets: Kievskaya & Toktogul */}
+                  {/* Cross streets */}
                   <path d="M 0,90 L 500,90" stroke="#B38E5D" strokeWidth="2" fill="none" />
                   <path d="M 0,200 L 500,200" stroke="#B38E5D" strokeWidth="2" fill="none" />
                   
@@ -205,26 +205,26 @@ export const ShowroomAndForm: React.FC<ShowroomAndFormProps> = ({ initialCaseTit
                 </svg>
 
                 <div className="relative z-10 flex items-center justify-between text-xs text-neutral-400 font-mono">
-                  <span>ул. Киевская (пл. Ала-Тоо)</span>
-                  <span>ул. Абдрахманова (Советская)</span>
+                  <span>{formTexts.mapStreets.topLeft}</span>
+                  <span>{formTexts.mapStreets.topRight}</span>
                 </div>
 
-                {/* Showroom Pin Point on Erkindik 35 */}
+                {/* Showroom pin */}
                 <div className="relative z-10 self-center text-center">
                   <div className="w-10 h-10 rounded-full bg-[#B38E5D] text-black mx-auto flex items-center justify-center shadow-xl animate-pulse">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div className="mt-2 bg-black/90 backdrop-blur-md px-3.5 py-1.5 rounded-sm border border-[#B38E5D]/60 text-xs text-white font-medium inline-block shadow-lg">
-                    ATELIER ARCHITECTURA · БИШКЕК
+                    {formTexts.mapPinTitle}
                   </div>
                   <div className="text-[10px] text-[#B38E5D] font-mono mt-0.5">
-                    бул. Эркиндик, 35 (пер. ул. Токтогула)
+                    {formTexts.mapPinAddress[lang]}
                   </div>
                 </div>
 
                 <div className="relative z-10 flex items-center justify-between text-[11px] font-mono text-neutral-400">
-                  <span>ул. Токтогула</span>
-                  <span>ул. Боконбаева / ЖД Вокзал</span>
+                  <span>{formTexts.mapStreets.bottomLeft}</span>
+                  <span>{formTexts.mapStreets.bottomRight}</span>
                 </div>
               </div>
             </div>

@@ -97,7 +97,7 @@ function AtelierContent() {
         {/* 5. Materials & Hidden Engineering */}
         <MaterialsHub />
 
-        {/* 6. High-Tech In-House Production in Bishkek */}
+        {/* 6. High-Tech In-House Production in Osh */}
         <ProductionStandards />
 
         {/* 7. 6-Step Workflow */}
@@ -112,7 +112,7 @@ function AtelierContent() {
         {/* 10. FAQ & Quick Service Links */}
         <FAQSection />
 
-        {/* 11. Showroom on Erkindik Blvd, Map & Lead Form */}
+        {/* 11. Showroom in Osh, Map & Lead Form */}
         <ShowroomAndForm initialCaseTitle={prefilledQuoteTitle} />
       </main>
 
@@ -136,7 +136,7 @@ function AtelierContent() {
       {/* Floating WhatsApp Quick Action Button (+996) */}
       <WhatsAppButton />
 
-      {/* Floating AI Concierge Chatbot Button & Dialog (Bishkek / Kyrgyzstan context) */}
+      {/* Floating AI Concierge Chatbot Button & Dialog (Osh / Kyrgyzstan context) */}
       <AIConciergeModal />
     </div>
   );

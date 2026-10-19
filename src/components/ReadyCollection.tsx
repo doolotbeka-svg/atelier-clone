@@ -360,7 +360,7 @@ export const ReadyCollection: React.FC<ReadyCollectionProps> = ({ onReserveItem 
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#B38E5D] shrink-0" />
-                  <span>100% сухая контрольная сборка в цеху Бишкека</span>
+                  <span>100% сухая контрольная сборка в цеху Оша</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#B38E5D] shrink-0" />
@@ -475,10 +475,10 @@ export const ReadyCollection: React.FC<ReadyCollectionProps> = ({ onReserveItem 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/10">
               <div className="text-xs text-neutral-400 font-light">
                 {lang === 'ky' 
-                  ? 'Бишкек шоурумунда көрсөтүүгө даяр' 
+                  ? 'Ош шоурумунда көрсөтүүгө даяр' 
                   : lang === 'en' 
-                  ? 'Available for private preview in Bishkek' 
-                  : 'Доступен к личному просмотру в шоуруме Бишкека'}
+                  ? 'Available for private preview in Osh' 
+                  : 'Доступен к личному просмотру в шоуруме Оша'}
               </div>
 
               <div className="flex items-center gap-3 w-full sm:w-auto">

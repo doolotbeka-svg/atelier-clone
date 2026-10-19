@@ -59,6 +59,13 @@ export const FIELD_LABELS: Record<string, string> = {
   highlight: 'Акцент',
   // Lead form
   mapTitle: 'Заголовок карты',
+  mapPinTitle: 'Надпись на метке карты',
+  mapPinAddress: 'Адрес под меткой',
+  mapStreets: 'Улицы на карте',
+  topLeft: 'Сверху слева',
+  topRight: 'Сверху справа',
+  bottomLeft: 'Снизу слева',
+  bottomRight: 'Снизу справа',
   namePlaceholder: 'Подсказка в поле «Имя»',
   phonePlaceholder: 'Подсказка в поле «Телефон»',
   notesPlaceholder: 'Подсказка в поле «Комментарий»',
@@ -152,4 +159,4 @@ export const ENUM_OPTIONS: Record<string, { value: string; label: string }[]> = 
 };
 
 // Fields hidden from the editor because the site no longer reads them
-export const HIDDEN_TEXT_PATHS = new Set(['showroom.phoneLabel']);
+export const HIDDEN_TEXT_PATHS = new Set(['showroom.phoneLabel', 'showroom.street1', 'showroom.street2']);

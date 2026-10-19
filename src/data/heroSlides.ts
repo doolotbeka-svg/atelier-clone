@@ -15,9 +15,9 @@ export const HERO_SLIDES: HeroSlide[] = [
       ky: 'Calacatta аралы бар монолиттүү ашканалар'
     },
     residence: {
-      ru: 'Пентхаус в ЖК Avangard City (Бишкек)',
-      en: 'Avangard City Penthouse (Bishkek)',
-      ky: 'Avangard City турак жайындагы пентхаус (Бишкек)'
+      ru: 'Пентхаус в новом ЖК (Ош)',
+      en: 'New-build Penthouse (Osh)',
+      ky: 'Жаңы турак жайдагы пентхаус (Ош)'
     },
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85',
     tag: {
@@ -33,9 +33,9 @@ export const HERO_SLIDES: HeroSlide[] = [
       ky: 'Жарыгы бар архитектуралык гардеробдор'
     },
     residence: {
-      ru: 'КД Monaco (Бишкек, бул. Эркиндик)',
-      en: 'Monaco Club House (Erkindik Blvd, Bishkek)',
-      ky: 'Monaco клубдук үйү (Эркиндик бул., Бишкек)'
+      ru: 'Клубный дом (Ош, центр)',
+      en: 'Club House (Central Osh)',
+      ky: 'Клубдук үй (Ош, борбор)'
     },
     image: 'https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=2000&q=85',
     tag: {
@@ -51,9 +51,9 @@ export const HERO_SLIDES: HeroSlide[] = [
       ky: 'Жашыруун айланма эшиктүү буазери иш бөлмөлөрү'
     },
     residence: {
-      ru: 'Вилла в VIP-городке «Ала-Арча»',
-      en: 'Ala-Archa Luxury Residence',
-      ky: 'Ала-Арча VIP-шаарчасындагы вилла'
+      ru: 'Частная вилла под Ошем',
+      en: 'Private Villa near Osh',
+      ky: 'Ош четиндеги жеке вилла'
     },
     image: 'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=2000&q=85',
     tag: {

@@ -30,9 +30,9 @@ export const READY_FURNITURE_CATALOG: ReadyFurnitureItem[] = [
     priceRub: 698000,
     inStock: true,
     stockLocation: {
-      ru: 'В наличии в шоуруме (Бишкек, бул. Эркиндик, 35)',
-      en: 'In stock at Bishkek showroom (35 Erkindik Blvd)',
-      ky: 'Бишкек шоурумунда бар (Эркиндик бульвары, 35)'
+      ru: 'В наличии в шоуруме (Ош)',
+      en: 'In stock at the Osh showroom',
+      ky: 'Ош шоурумунда бар'
     },
     leadTimeDays: 1,
     image: 'https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&w=1200&q=85',
@@ -89,9 +89,9 @@ export const READY_FURNITURE_CATALOG: ReadyFurnitureItem[] = [
     priceRub: 535000,
     inStock: true,
     stockLocation: {
-      ru: 'В наличии в шоуруме (Бишкек, бул. Эркиндик, 35)',
-      en: 'In stock at Bishkek showroom (35 Erkindik Blvd)',
-      ky: 'Бишкек шоурумунда бар (Эркиндик бульвары, 35)'
+      ru: 'В наличии в шоуруме (Ош)',
+      en: 'In stock at the Osh showroom',
+      ky: 'Ош шоурумунда бар'
     },
     leadTimeDays: 1,
     image: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=1200&q=85',
@@ -147,9 +147,9 @@ export const READY_FURNITURE_CATALOG: ReadyFurnitureItem[] = [
     priceRub: 298000,
     inStock: true,
     stockLocation: {
-      ru: 'В наличии: 2 кресла в шоуруме Бишкек',
-      en: 'In stock: 2 chairs at Bishkek showroom',
-      ky: 'Шоурумда бар: 2 даана Бишкек'
+      ru: 'В наличии: 2 кресла в шоуруме в Оше',
+      en: 'In stock: 2 chairs at Osh showroom',
+      ky: 'Ош шоурумунда бар: 2 даана'
     },
     leadTimeDays: 1,
     image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=85',
@@ -205,9 +205,9 @@ export const READY_FURNITURE_CATALOG: ReadyFurnitureItem[] = [
     priceRub: 390000,
     inStock: true,
     stockLocation: {
-      ru: 'В наличии в шоуруме (Бишкек, бул. Эркиндик, 35)',
-      en: 'In stock at Bishkek showroom (35 Erkindik Blvd)',
-      ky: 'Бишкек шоурумунда бар (Эркиндик бульвары, 35)'
+      ru: 'В наличии в шоуруме (Ош)',
+      en: 'In stock at the Osh showroom',
+      ky: 'Ош шоурумунда бар'
     },
     leadTimeDays: 1,
     image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=1200&q=85',
@@ -263,9 +263,9 @@ export const READY_FURNITURE_CATALOG: ReadyFurnitureItem[] = [
     priceRub: 760000,
     inStock: true,
     stockLocation: {
-      ru: 'В наличии в шоуруме (Бишкек, бул. Эркиндик, 35)',
-      en: 'In stock at Bishkek showroom (35 Erkindik Blvd)',
-      ky: 'Бишкек шоурумунда бар (Эркиндик бульвары, 35)'
+      ru: 'В наличии в шоуруме (Ош)',
+      en: 'In stock at the Osh showroom',
+      ky: 'Ош шоурумунда бар'
     },
     leadTimeDays: 1,
     image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=1200&q=85',
@@ -321,9 +321,9 @@ export const READY_FURNITURE_CATALOG: ReadyFurnitureItem[] = [
     priceRub: 505000,
     inStock: true,
     stockLocation: {
-      ru: 'В наличии в шоуруме (Бишкек, бул. Эркиндик, 35)',
-      en: 'In stock at Bishkek showroom (35 Erkindik Blvd)',
-      ky: 'Бишкек шоурумунда бар (Эркиндик бульвары, 35)'
+      ru: 'В наличии в шоуруме (Ош)',
+      en: 'In stock at the Osh showroom',
+      ky: 'Ош шоурумунда бар'
     },
     leadTimeDays: 1,
     image: 'https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=1200&q=85',

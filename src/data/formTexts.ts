@@ -7,18 +7,22 @@ export interface FormOption {
 
 // Texts of the showroom lead form and the consultation modal that are not in the translations file
 export const FORM_TEXTS = {
-  mapTitle: { ru: 'Карта проезда · Бишкек', en: 'Bishkek Showroom Map', ky: 'Бишкек картасы' },
+  mapTitle: { ru: 'Карта проезда · Ош', en: 'Osh Showroom Map', ky: 'Ош картасы' },
+  mapPinTitle: 'ATELIER ARCHITECTURA · ОШ',
+  mapPinAddress: { ru: 'г. Ош', en: 'Osh, Kyrgyzstan', ky: 'Ош ш.' },
+  // Street names around the pin on the stylised map; empty ones are not shown
+  mapStreets: { topLeft: '', topRight: '', bottomLeft: '', bottomRight: '' },
   namePlaceholder: { ru: 'Иван Демидов', en: 'Full Name', ky: 'Аты-жөнүңүз' },
   phonePlaceholder: '+996 (555) 00-00-00',
   notesPlaceholder: {
-    ru: 'Опишите ваши предпочтения по шпону, камню, габаритам или укажите адрес объекта в Бишкеке/Иссык-Куле...',
+    ru: 'Опишите ваши предпочтения по шпону, камню, габаритам или укажите адрес объекта в Оше или области...',
     en: 'Notes regarding materials or drawings...',
     ky: 'Материалдар же чиймелер боюнча каалоолор...'
   },
   visitShowroomLabel: {
-    ru: 'Хочу лично посетить шоурум в Бишкеке для подбора материалов при правильном свете',
-    en: 'Schedule private showroom consultation in Bishkek',
-    ky: 'Бишкектеги шоурумга жолугушууну пландоо (бул. Эркиндик, 35)'
+    ru: 'Хочу лично посетить шоурум в Оше для подбора материалов при правильном свете',
+    en: 'Schedule private showroom consultation in Osh',
+    ky: 'Оштогу шоурумга жолугушууну пландоо'
   },
   modalNamePlaceholder: { ru: 'Константин / Alexander', en: 'Konstantin / Alexander', ky: 'Константин / Alexander' },
   modalNotesPlaceholder: { ru: 'Комментарий...', en: 'Notes...', ky: 'Комментарий...' },
