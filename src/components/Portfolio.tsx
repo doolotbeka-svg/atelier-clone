@@ -118,13 +118,10 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectCase }) => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   
-                  {/* Top Kicker & Price Indicator */}
+                  {/* Top Kicker */}
                   <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-xs text-white/90">
                     <span className="font-mono bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
                       {caseItem.residence}
-                    </span>
-                    <span className="bg-black/75 backdrop-blur-sm px-2.5 py-1 rounded-sm text-[#B38E5D] font-mono font-medium text-xs border border-[#B38E5D]/30 tabular-nums">
-                      {formatPrice(caseItem.priceRub, caseItem.priceKgs)}
                     </span>
                   </div>
 

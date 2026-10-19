@@ -37,16 +37,6 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Price Badge */}
-            <div className="hidden sm:block text-right">
-              <div className="text-[10px] font-mono uppercase text-neutral-400">
-                {t.caseModal.turnkeyCost}
-              </div>
-              <div className="font-mono text-base text-[#B38E5D] font-semibold tabular-nums">
-                {formatPrice(caseItem.priceRub, caseItem.priceKgs)}
-              </div>
-            </div>
-
             <button
               onClick={onClose}
               className="p-2 text-neutral-400 hover:text-white rounded-sm hover:bg-white/5 transition-colors cursor-pointer"
